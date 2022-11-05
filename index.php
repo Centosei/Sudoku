@@ -50,26 +50,27 @@ $sudoku3->solveProblem();
 $sudoku4 = new Sudoku();
 
 echo <<<_END
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
     <meta charset="UTF-8">
     <title>Sudoku.php</title>
-<style>
-body {
-    width: 1000px;
+    <style>
+    body {
+    width: auto;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-}
-pre {
-    width: 500px;
+    }
+    pre {
+    width: auto;
     text-align: center;
     border: 5px dotted black;
-}
-</style>
-</head>
-<body>
+    font-size: 18px;
+    }
+    </style>
+    </head>
+    <body>
     <pre>
 _END;
 $sudoku->displayProblem();
@@ -80,7 +81,7 @@ $sudoku3->displayProblem();
 echo "</pre><pre>";
 $sudoku4->displayProblem();
 echo <<<_END
-</pre>
-</body>
-</html>
-_END;
+    </pre>
+    </body>
+    </html>
+    _END;
