@@ -40,7 +40,7 @@ class Sudoku
             else return false;
         }
     }
- 
+
     public function displayProblem()
     {
         if (!count($this->init_array))
@@ -297,55 +297,3 @@ class Sudoku
             $this->solved = true;
     }
 }
-
-$p_array = [
-    [2, 0, 9, 6, 0, 1, 8, 0, 0],
-    [0, 1, 0, 0, 5, 0, 0, 4, 0],
-    [5, 0, 4, 3, 0, 9, 1, 0, 0],
-    [1, 0, 5, 0, 3, 0, 0, 0, 9],
-    [8, 4, 0, 0, 0, 2, 0, 7, 0],
-    [3, 0, 7, 1, 8, 0, 5, 2, 0],
-    [7, 0, 2, 0, 1, 0, 4, 0, 6],
-    [0, 6, 0, 9, 0, 3, 0, 5, 0],
-    [9, 0, 8, 4, 0, 0, 2, 0, 3],
-];
-$sudoku = new Sudoku();
-$sudoku->setProblem($p_array);
-$sudoku->solveProblem();
-$sudoku->displayProblem();
-
-$p_array2 = [
-    [5, 0, 0, 0, 0, 6, 0, 4, 0],
-    [2, 0, 3, 4, 9, 0, 0, 0, 5],
-    [0, 0, 0, 0, 8, 1, 3, 0, 9],
-    [1, 0, 4, 0, 6, 0, 7, 0, 2],
-    [0, 7, 6, 0, 5, 2, 0, 9, 0],
-    [8, 0, 9, 0, 4, 0, 0, 1, 6],
-    [0, 0, 0, 0, 7, 0, 2, 0, 0],
-    [7, 3, 0, 0, 2, 8, 0, 5, 4],
-    [4, 0, 0, 9, 1, 0, 6, 0, 0],
-];
-$sudoku2 = new Sudoku();
-$sudoku2->setProblem($p_array2);
-$sudoku2->solveProblem();
-$sudoku2->displayProblem();
-
-// incorrect problem
-$p_array3 = [
-    [0, 0, 8, 0, 0, 1, 0, 3, 0],
-    [0, 4, 0, 0, 3, 0, 1, 0, 5],
-    [9, 0, 0, 0, 0, 8, 0, 4, 0],
-    [0, 3, 0, 8, 0, 0, 5, 0, 2],
-    [1, 0, 0, 0, 7, 0, 0, 6, 0],
-    [0, 0, 5, 0, 2, 9, 8, 0, 4],
-    [0, 7, 0, 5, 0, 4, 0, 2, 1],
-    [3, 1, 1, 2, 0, 7, 4, 0, 0],
-    [0, 5, 0, 0, 0, 0, 6, 9, 7],
-];
-$sudoku3 = new Sudoku();
-$sudoku3->setProblem($p_array3);
-$sudoku3->solveProblem();
-$sudoku3->displayProblem();
-
-$sudoku4 = new Sudoku();
-$sudoku4->displayProblem();
