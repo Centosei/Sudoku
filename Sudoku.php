@@ -1,7 +1,7 @@
 <?php
 class Sudoku
 {
-    private $problem = [
+    public $problem = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,6 +23,44 @@ class Sudoku
     public function setProblem($p_array)
     {
         $this->problem = $p_array;
+    }
+
+    public function importProblem($single_array)
+    {
+        $this->export = array();
+        for ( $r = 0 ; $r < 9 ; ++$r )
+        {
+            $this->row = array();
+            for ( $c = 0 ; $c < 9 ; ++$c )
+            {
+                $this->keyRC = strval($r) . strval($c);
+                $this->val = $single_array[$this->keyRC];
+                if ($this->val === '')
+                {
+                    $this->row[] = 0;
+                }
+                else
+                {
+                    $this->row[] = intval($this->val);
+                }
+            }
+            $this->export[] = $this->row;
+        }
+        $this->setProblem($this->export);
+    }
+
+    public function displayForm()
+    {
+        for ( $r = 0 ; $r < 9 ; ++$r )
+        {
+            for ( $c = 0 ; $c < 9 ; ++$c )
+            {
+                if ($this->problem[$r][$c] === 0) $this->temp = '';
+                else $this->temp = intval($this->problem[$r][$c]);
+                echo "<div><input type='number' min='1' max='9' name='"
+                    . strval($r) . strval($c) . "' value='" . $this->temp . "'></div>";
+            }
+        }
     }
 
     public function is_done(bool $str_result = false)
@@ -95,7 +133,6 @@ class Sudoku
         }
     }
 
-    // not yet
     public function solveProblem()
     {
         $this->init_array = $this->problem;
