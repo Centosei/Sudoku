@@ -1,7 +1,7 @@
 <?php
 class Sudoku
 {
-    public $problem = [
+    private $problem = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -15,11 +15,13 @@ class Sudoku
 
     public $solved = false;
     public $stuck = false;
+    public $exec_time = 0;
 
     private $attempt = 0;
     private $init_array = array();
     private $last_array = array();
-
+    private $num_array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    
     public function setProblem($p_array)
     {
         $this->problem = $p_array;
@@ -113,7 +115,8 @@ class Sudoku
                     echo $this->init_array[$r][$c];
                 }
                 echo " |";
-                if ($r === 3 ) echo str_repeat(" ", 4) . $this->is_done(true) . str_repeat(" ", 16 - strlen($this->is_done(true)));
+                if ($r === 2 ) echo str_repeat(" ", 4) . $this->is_done(true) . str_repeat(" ", 16 - strlen($this->is_done(true)));
+                else if ($r === 3) echo str_repeat(" ", 4) . "In " . number_format($this->exec_time, 4) . "sec" . str_repeat(" ", 4);
                 else if ($r === 4) echo " " . str_repeat("-", 17) . "> ";
                 else if ($r === 5) echo str_repeat(" ", 4) . "# of Attempt:" . str_repeat(" ", 3);
                 else if ($r === 6) echo str_repeat(" ", 11 - strlen($this->attempt)) . $this->attempt . str_repeat(" ", 9);
@@ -135,6 +138,7 @@ class Sudoku
 
     public function solveProblem()
     {
+        $start_time = microtime(true);
         $this->init_array = $this->problem;
         while (!$this->stuck)
         {
@@ -173,6 +177,9 @@ class Sudoku
                 }
             }
 
+            // check if there's only one number possible for a square
+            $this->checkPossible();
+
             // check if stuck
             $this->stuck = ($this->last_array === $this->problem);
             if ($this->stuck) break;
@@ -180,6 +187,8 @@ class Sudoku
             // save the last result of the attempt
             $this->last_array = $this->problem;
         }
+        $end_time = microtime(true);
+        $this->exec_time = $end_time - $start_time;
     }
 
     private function checkRow($num)
@@ -332,5 +341,32 @@ class Sudoku
             $this->solved = false;
         else
             $this->solved = true;
+    }
+
+    private function checkPossible()
+    {
+        for ( $r = 0 ; $r < 9 ; ++$r)
+        {
+            for ( $c = 0 ; $c < 9 ; ++$c )
+            {
+                if ($this->problem[$r][$c] === 0)
+                {
+                    $rs = intval($r / 3) * 3;
+                    $cs = intval($c / 3) * 3;
+                    $bucket = array_merge($this->problem[$r], array_column($this->problem, $c));
+                    for ( $x = 0 ; $x < 3 ; ++$x )
+                    {
+                        for ( $y = 0 ; $y < 3 ; ++$y )
+                        {
+                            array_push($bucket, $this->problem[$rs+$x][$cs+$y]);
+                        }
+                    }
+                    $bucket = array_unique($bucket);
+                    $bucket = array_values(array_diff($this->num_array, $bucket));
+                    if (count($bucket) === 1)
+                        $this->problem[$r][$c] = $bucket[0];
+                }
+            }
+        }
     }
 }
