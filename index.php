@@ -5,8 +5,17 @@ $sudoku = new Sudoku();
 if (!empty($_POST))
 {
     $sudoku->importProblem($_POST);
+    $sudoku->solveProblem();
 }
-$sudoku->solveProblem();
+else if (isset($_GET['gen']))
+{
+    $sudoku->generate();
+    $sudoku->setProblem($sudoku->root_problem);
+}
+else
+{
+    $sudoku->solveProblem();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

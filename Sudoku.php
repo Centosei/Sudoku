@@ -18,7 +18,7 @@ class Sudoku
 
     private $exec_time = 0;
     private $attempt = 0;
-    private $init_array = array();
+    public $init_array = array();
     private $last_array = array();
     private $num_array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     
