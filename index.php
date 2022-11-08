@@ -16,14 +16,26 @@ $sudoku->solveProblem();
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+  <div id="score">
+<?php
+$sudoku->displayResult();
+?>
+  </div>
     <div class="container">
-      <form action="/index.php" method="post">
+      <form id="solve" action="/index.php" method="post">
 <?php
 $sudoku->displayForm();
 ?>
-        <button>Solve</button>
       </form>
-      <form action="/index.php" method="get"><button>RESET</button></form>
+      <div class="btns">
+        <button  form="solve">Solve</button>
+        <button  form="reset">RESET</button>
+        <button  form="generate">GENERATE</button>
+      </div>
+      <form id="reset" action="/index.php" method="get"></form>
+      <form id="generate" action="/index.php" method="get">
+        <input name="gen" type="hidden" value="true">
+      </form>
     </div>
   </body>
 </html>

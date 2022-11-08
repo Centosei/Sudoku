@@ -15,8 +15,8 @@ class Sudoku
 
     public $solved = false;
     public $stuck = false;
-    public $exec_time = 0;
 
+    private $exec_time = 0;
     private $attempt = 0;
     private $init_array = array();
     private $last_array = array();
@@ -49,6 +49,13 @@ class Sudoku
             $this->export[] = $this->row;
         }
         $this->setProblem($this->export);
+    }
+
+    public function displayResult()
+    {
+        echo "<div>Attempt: " . strval($this->attempt) .  "</div>";
+        echo "<div>Result: " . strval($this->solved) . "</div>";
+        echo "<div>Time: " . strval(number_format($this->exec_time, 4)) . "s.</div>";
     }
 
     public function displayForm()
@@ -140,6 +147,7 @@ class Sudoku
     {
         $start_time = microtime(true);
         $this->init_array = $this->problem;
+        $this->attempt = 0;
         while (!$this->stuck)
         {
             for ( $num = 1 ; $num < 10 ; ++$num )
@@ -366,6 +374,108 @@ class Sudoku
                     if (count($bucket) === 1)
                         $this->problem[$r][$c] = $bucket[0];
                 }
+            }
+        }
+    }
+
+    // problem generation
+
+    public $root_problem = [
+        [8, 3, 5, 4, 1, 6, 9, 2, 7],
+        [2, 9, 6, 8, 5, 7, 4, 3, 1],
+        [4, 1, 7, 2, 9, 3, 6, 5, 8],
+        [5, 6, 9, 1, 3, 4, 7, 8, 2],
+        [1, 2, 3, 6, 7, 8, 5, 4, 9],
+        [7, 4, 8, 5, 2, 9, 1, 6, 3],
+        [6, 5, 2, 7, 8, 1, 3, 9, 4],
+        [9, 8, 1, 3, 4, 5, 2, 7, 6],
+        [3, 7, 4, 9, 6, 2, 8, 1, 5],
+    ];
+
+    public $mixed_array = array();
+
+    public function generate()
+    {
+        $this->mixProblem(10);
+        $this->mixed_array = $this->root_problem;
+        $this->popProblem();
+        $this->setProblem($this->root_problem);
+        $this->solveProblem();
+        if (!$this->solved || ($this->attempt < 50))
+        {
+            $this->stuck = false;
+            $this->solved = false;
+            $this->root_problem = $this->mixed_array;
+            $this->generate();
+        }
+    }
+
+    public function swapSqr($square, $num1, $num2)
+    {
+        //
+        $or = intval($square / 3) * 3;
+        $oc = ($square % 3) * 3;
+        for ( $i = 0 ; $i < 9 ; ++$i )
+        {
+            $sr = $or + intval($i / 3);
+            $sc = $oc + $i % 3;
+            if ($this->root_problem[$sr][$sc] === $num1)
+            {
+                $r1 = $sr;
+                $c1 = $sc;
+            }
+            else if ($this->root_problem[$sr][$sc] === $num2)
+            {
+                $r2 = $sr;
+                $c2 = $sc;
+            }
+        }
+        $this->root_problem[$r1][$c1] = $num2;
+        $this->root_problem[$r2][$c2] = $num1;
+    }
+
+    public function swapFlow()
+    {
+        $rand_keys = array_rand($this->num_array, 2);
+        for ( $i = 0 ; $i < 9 ; ++$i )
+        {
+            $this->swapSqr($i, $this->num_array[$rand_keys[0]], $this->num_array[$rand_keys[1]]);
+        }
+    }
+
+    public function mixProblem($times)
+    {
+        for ( $t = 0 ; $t < $times ; ++$t )
+            $this->swapFlow();
+    }
+
+    public function popNum($square, $num)
+    {
+        //
+        $or = intval($square / 3) * 3;
+        $oc = ($square % 3) * 3;
+        for ( $i = 0 ; $i < 9 ; ++$i )
+        {
+            $sr = $or + intval($i / 3);
+            $sc = $oc + $i % 3;
+            if ($this->root_problem[$sr][$sc] === $num)
+            {
+                $this->root_problem[$sr][$sc] = 0;
+                break;
+            }
+        }
+    }
+
+    public function popProblem()
+    {
+        for ( $n = 1 ; $n < 10 ; ++$n )
+        {
+            $s_array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            shuffle($s_array);
+            for ( $f = 0 ; $f < rand(5, 7) ; ++$f )
+            {
+                $sq = array_pop($s_array);
+                $this->popNum($sq, $n);
             }
         }
     }

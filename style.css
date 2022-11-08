@@ -23,13 +23,25 @@ input {
     font-size: 40px;
     text-align: center;
 }
+.btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
 button {
     height: 50px;
-    width: 200px;
-    margin: 10px auto;
-    grid-row: 10;
-    grid-column: 1 / 10;
     font-size: 30px;
+}
+div#score {
+    width: 820px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+div#score div {
+    font-size: 30px;
+    line-height: 40px;
+    padding: 0 10px;
+    text-align: center;
 }
 
 /* Chrome, Safari, Edge, Opera */
